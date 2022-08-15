@@ -179,7 +179,6 @@ const Header:any = styled.header<any>`
 const HeaderContents = styled.div`
   display: flex;
   justify-content: space-around;
-  
 `;
 
 const Body = styled.div`
