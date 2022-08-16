@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import styled from "@emotion/styled";
 import Modal from "./components/Modal";
+import React, { useCallback, useEffect, useState } from 'react';
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {createTodos,deleteTodo} from "./redux/store/todolist";
 import { onDarkMode,onWhiteMode } from "./redux/store/mode";
@@ -22,8 +22,7 @@ function App() {
   useEffect(() => {
     console.log(userInfo);
     console.log(loginModal);
-    
-  })
+  });
 
   const { memo } = memoInput;
   const { nickname, password } = userinfo;
@@ -54,7 +53,6 @@ function App() {
 
   const createUser = () => {
     const Users : UserInfo = { password , nickname }
-
     setUserList(userList.concat(Users));
     setUserInfo({...userinfo, nickname:'', password:''});
   };
@@ -104,15 +102,15 @@ function App() {
           <Body>
             { todolist.map((ele:any) => {
               return (
-              <MemoWrapper key={ele.id}>
-                <LeftSide>{ele.text}</LeftSide>
-                <RightSide>
-                  <button onClick={()=> deleteButton(ele.id)}>
-                    delete
-                  </button>
-                </RightSide>
-              </MemoWrapper>
-            );
+                <MemoWrapper key={ele.id}>
+                  <LeftSide>{ele.text}</LeftSide>
+                  <RightSide>
+                    <button onClick={()=> deleteButton(ele.id)}>
+                      delete
+                    </button>
+                  </RightSide>
+                </MemoWrapper>
+              );
             })}
           </Body>
           <Footer darkMode={modelist.darkMode} onKeyPress={onEnterKey}>
