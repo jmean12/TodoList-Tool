@@ -17,12 +17,6 @@ function App() {
   const todolist:any = useSelector((state:any) => state.todo.todos, shallowEqual);
   const modelist:any = useSelector((state:any) => state.mode, shallowEqual)
   const loginModal:any = useSelector((state:any) => (state.login.onModal), shallowEqual);
-  const userInfo:any = useSelector((state:any)=> (state.login.userInfo), shallowEqual);
-
-  useEffect(() => {
-    console.log(userInfo);
-    console.log(loginModal);
-  });
 
   const { memo } = memoInput;
   const { nickname, password } = userinfo;
@@ -44,7 +38,6 @@ function App() {
   },[userinfo])
 
   const createToolkitMemo = (value:any) => {
-
     if(memo.length > 0) {
       dispatch(createTodos(value));
       setMemoInput({...memoInput, memo: ""});
@@ -103,7 +96,7 @@ function App() {
             { todolist.map((ele:any) => {
               return (
                 <MemoWrapper key={ele.id}>
-                  <LeftSide>{ele.text}</LeftSide>
+                  <LeftSide>{ele.memo}</LeftSide>
                   <RightSide>
                     <button onClick={()=> deleteButton(ele.id)}>
                       delete
