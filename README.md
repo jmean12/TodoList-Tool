@@ -5,3 +5,4 @@
 
 - [x] redux-Toolkit
 - [ ] Recoil
+- [ ] zustand
