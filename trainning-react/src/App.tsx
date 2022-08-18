@@ -1,46 +1,68 @@
 import './App.css';
 import styled from "@emotion/styled";
 import Modal from "./components/Modal";
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {shallowEqual, useDispatch, useSelector} from "react-redux";
-import {createTodos,deleteTodo, onChangeTodos} from "./redux/store/todolist";
+import {createTodos,deleteTodo} from "./redux/store/todolist";
 import { onDarkMode,onWhiteMode } from "./redux/store/mode";
 import { LoginModalControl } from './redux/store/login';
 
 function App() {
-  const dispatch = useDispatch();
+  const [memoInput, setMemoInput] = useState<Memo>({ id: 1,  memo: '' });
   const [minimal, setMinimal] = useState<boolean>(false);
   const [userinfo, setUserInfo] = useState<UserInfo>({ nickname:'', password:'' });
   const [userList, setUserList] = useState<UserInfo[]>([]);
+  const dispatch = useDispatch();
 
   const todolist:any = useSelector((state:any) => state.todo.todos, shallowEqual);
   const modelist:any = useSelector((state:any) => state.mode, shallowEqual)
-  const loginModal:any = useSelector((state:any) => state.login.onModal, shallowEqual);
-  const todoItem = useSelector((state:any) => state.todo.memoInput, shallowEqual);
+  const loginModal:any = useSelector((state:any) => (state.login.onModal), shallowEqual);
+  const userInfo:any = useSelector((state:any)=> (state.login.userInfo), shallowEqual);
+
+  useEffect(() => {
+    console.log(userInfo);
+    console.log(loginModal);
+  });
+
+  const { memo } = memoInput;
   const { nickname, password } = userinfo;
-  const { memo } = todoItem;
   const todays = new Date();
 
-  const toolkitTodoListHandler = useCallback((e:React.ChangeEvent<HTMLInputElement>) => {
-    return dispatch(onChangeTodos({ id: todoItem.id , memo: e.target.value }))
-  },[dispatch, todoItem.id]);
+  const memoHandler = useCallback((e:React.ChangeEvent<HTMLInputElement>) => {
+    setMemoInput({
+      ...memoInput,
+      memo: e.target.value,
+    });
+  },[memoInput])
 
-  const createToolkitMemo = useCallback((value:any) => {
-    return memo.length > 0 && (dispatch(createTodos(value)));
-  },[dispatch, memo.length]);
+  const UserInfoHandler = useCallback((e:React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+      setUserInfo({
+      ...userinfo,
+      nickname: value,
+    });
+  },[userinfo])
+
+  const createToolkitMemo = (value:any) => {
+
+    if(memo.length > 0) {
+      dispatch(createTodos(value));
+      setMemoInput({...memoInput, memo: ""});
+    };
+  };
 
   const createUser = () => {
     const Users : UserInfo = { password , nickname }
     setUserList(userList.concat(Users));
-    setUserInfo({...userinfo, nickname:'', password:'' });
+    setUserInfo({...userinfo, nickname:'', password:''});
   };
 
   const deleteButton = (id:number) => {
-    dispatch(deleteTodo(id));
+    dispatch(deleteTodo(id))
   };
 
   const onEnterKey = (e:any) => {
-    return e.key === 'Enter' && memo.length > 0 ? createToolkitMemo(todoItem) : null
+    return e.key === 'Enter' && memo.length > 0 ? createToolkitMemo(memoInput) : null
   };
 
   const getTodayDate = () => {
@@ -48,9 +70,9 @@ function App() {
   };
 
   const onMinimal = () => {
-    return setMinimal(!minimal)
+    return !minimal ? setMinimal(true) : setMinimal(false);
   };
-  
+
   return (
     <div className="App"
          style={{ background: modelist.darkMode? '#212529' : 'white' }}>
@@ -81,7 +103,7 @@ function App() {
             { todolist.map((ele:any) => {
               return (
                 <MemoWrapper key={ele.id}>
-                  <LeftSide>{ele.memo}</LeftSide>
+                  <LeftSide>{ele.text}</LeftSide>
                   <RightSide>
                     <button onClick={()=> deleteButton(ele.id)}>
                       delete
@@ -93,14 +115,14 @@ function App() {
           </Body>
           <Footer darkMode={modelist.darkMode} onKeyPress={onEnterKey}>
             <input placeholder="할 일을 입력하세요."
-                   onChange={toolkitTodoListHandler} 
-                   value={memo} />
-            <button onClick={()=>createToolkitMemo(todoItem)}>Todo</button>
+                   onChange={memoHandler} value={memo} />
+            <button onClick={()=>createToolkitMemo(memoInput)}>Todo</button>
           </Footer>
         </Wrapper>
       </Container>
-      { loginModal && ( <Modal  nickname={nickname}
-                                password={password}                 
+      { loginModal && ( <Modal UserInfoHandler={UserInfoHandler}
+                                nickname={nickname}
+                                password={password}                            
                                 createUser={createUser} />
                   )}
     </div>

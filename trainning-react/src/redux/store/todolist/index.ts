@@ -9,11 +9,6 @@ export const TodoSlice = createSlice({
 	name: "todoList",
 	initialState,
 	reducers:{
-		onChangeTodos: (state:any, action) => {						
-			state.memoInput.memo = action.payload.memo;
-			state.memoInput.id = action.payload.id;
-			return
-		},
 		createTodos: (state:any, action) => {			
 			let text = { memo: action.payload.memo, id: state.memoInput.id++ };																
 			state.todos.push(text);
@@ -28,5 +23,5 @@ export const TodoSlice = createSlice({
 	},
 });
 
-export const { createTodos, deleteTodo, onChangeTodos } = TodoSlice.actions;
+export const { createTodos, deleteTodo } = TodoSlice.actions;
 export default TodoSlice.reducer;
