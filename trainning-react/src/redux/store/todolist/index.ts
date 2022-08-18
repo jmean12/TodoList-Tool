@@ -1,25 +1,26 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-export type Todos = {
-	id:number,
-	text:string,
-};
-
 const initialState = {
 	todos: [],
+	memoInput: { id:1, memo: '' },
 };
 
 export const TodoSlice = createSlice({
 	name: "todoList",
 	initialState,
 	reducers:{
-
-		createTodos: (state:any,action:any) => {
-			let todo:any = { id: action.payload.id++ , text: action.payload.memo };
-			// push가 아니라 concat으로 수정해야한다.
-			state.todos.push(todo)
+		onChangeTodos: (state:any, action) => {						
+			state.memoInput.memo = action.payload.memo;
+			state.memoInput.id = action.payload.id;
+			return
 		},
-		deleteTodo: (state:any, action:any) => {
+		createTodos: (state:any, action) => {			
+			let text = { memo: action.payload.memo, id: state.memoInput.id++ };																
+			state.todos.push(text);
+			state.memoInput.memo = '';
+			return
+		},
+		deleteTodo: (state, action) => {
 			state.todos = state.todos.filter((ele:any)=> {
 				return ele.id !== action.payload
 			})
@@ -27,5 +28,5 @@ export const TodoSlice = createSlice({
 	},
 });
 
-export const { createTodos,deleteTodo } = TodoSlice.actions;
+export const { createTodos, deleteTodo, onChangeTodos } = TodoSlice.actions;
 export default TodoSlice.reducer;

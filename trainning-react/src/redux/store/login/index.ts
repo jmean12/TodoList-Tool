@@ -13,8 +13,11 @@ export const LoginSlice = createSlice({
         LoginModalControl: (state) => {                              
             state.onModal = !state.onModal;
         },
+        ChangeLoginInput: (state, action) => {
+            state.userInfo.nickName = action.payload;
+        },
     },
 });
 
-export const { LoginModalControl } = LoginSlice.actions;
+export const { LoginModalControl, ChangeLoginInput } = LoginSlice.actions;
 export default LoginSlice.reducer;

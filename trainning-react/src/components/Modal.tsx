@@ -1,15 +1,16 @@
 import styled from "@emotion/styled";
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { LoginModalControl } from '../redux/store/login';
+import { useCallback } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { ChangeLoginInput, LoginModalControl } from '../redux/store/login';
 
 export default function Modal({ createUser, UserInfoHandler, nickname }:any) {
   const dispatch = useDispatch();
-  const loginInfo = useSelector((state:any) => (state.login.onModal));
+  const loginInfo = useSelector((state:any) => (state.login.userInfo.nickName), shallowEqual);
 
-  useEffect(() => {
-	console.log(loginInfo);
-  });
+  const UserInfos = useCallback((e:React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    dispatch(ChangeLoginInput(value));
+  },[dispatch]);
   
 	return (
 		<ModalContainer>
@@ -21,8 +22,8 @@ export default function Modal({ createUser, UserInfoHandler, nickname }:any) {
 					<Contents>
 						<NameContainer>
 							<input placeholder={"닉네임을 입력하세요"}
-							       onChange={UserInfoHandler}
-							       value={nickname}	/>
+							       onChange={UserInfos}
+							       value={loginInfo} />
 						</NameContainer>
 					</Contents>
 				</Body>
