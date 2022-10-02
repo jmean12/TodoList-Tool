@@ -125,6 +125,7 @@ function App() {
 const Container = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
 
 const ButtonContainer = styled.div`
@@ -153,9 +154,10 @@ const Wrapper:any = styled.div<any>`
   justify-content: center;
   flex-direction: column;
   border-radius: 12px;
-  background: ${({ darkMode }) => ( darkMode ? '#FFFFFF' : '#38d9a9')};
+  background: ${({ darkMode }) => ( darkMode ? '#212529' : '#38d9a9')};
   transition: 0.4s;
-  color: ${({ darkMode }) => ( darkMode ? '#343a40' : '#FFFFFF')};
+  color: ${({ darkMode }) => ( darkMode ? '#FFFF' : '#FFFFFF')};
+  border: solid 1px;
   padding: 1rem;
   margin-top: 8rem;
   width: 380px;
@@ -226,7 +228,9 @@ const Footer:any = styled.footer<any>`
     font-size: 15px;
     margin-right: 5px;
     width: 70%;
-    background: ${({ darkMode }) => darkMode ? '#f1f3f5' : '#FFFFFF'};
+    border: solid 1px #FFF;
+    color: #FFF;
+    background: ${({ darkMode }) => darkMode ? '#212529' : '#FFFFFF'};
   }
   button {
     padding: 0.8rem;
